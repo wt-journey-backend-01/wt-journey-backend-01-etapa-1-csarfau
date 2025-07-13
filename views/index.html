@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevBurger - O Lanche dos Desenvolvedores</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>DevBurger 🍔</h1>
+        <p>O lanche que debuga a sua fome!</p>
+      </header>
+
+      <main>
+        <section id="cardapio">
+          <h2>Nosso Cardápio</h2>
+
+          <h3>Lanches</h3>
+          <div id="lanches-grid" class="cardapio-grid">
+            <div class="item-cardapio">
+              <h3>DevBurger Clássico</h3>
+              <p>
+                <strong>Ingredientes:</strong> Pão brioche, Carne 150g, Queijo
+                cheddar, Alface americana, Tomate fresco, Molho especial
+              </p>
+            </div>
+
+            <div class="item-cardapio">
+              <h3>Burger de Bacon</h3>
+              <p>
+                <strong>Ingredientes:</strong> Pão australiano, Carne 180g,
+                Queijo prato, Bacon crocante, Cebola caramelizada, Molho
+                barbecue
+              </p>
+            </div>
+
+            <div class="item-cardapio">
+              <h3>Commit Veggie</h3>
+              <p>
+                <strong>Ingredientes:</strong> Pão integral, Burger de grão de
+                bico, Queijo vegano, Rúcula, Tomate seco, Maionese de ervas
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="sugestao">
+          <h2>Sugira um Novo Sabor!</h2>
+          <p>Tem uma ideia genial para um novo lanche? Conte para nós!</p>
+
+          <form action="/sugestao" method="GET" class="form-sugestao">
+            <label for="nome">Nome do lanche</label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              placeholder="Nome do seu lanche"
+              required
+            />
+            <label for="ingredientes">Descrição do lanche</label>
+            <textarea
+              id="ingredientes"
+              name="ingredientes"
+              rows="4"
+              placeholder="Descreva os ingredientes e o preparo"
+              required
+            ></textarea>
+            <button type="submit">Enviar Sugestão</button>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
