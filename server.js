@@ -66,8 +66,14 @@ app.get('/api/lanches', (_, res) => {
             }
 
             cardapioData.forEach(lanche => {
-                if (!lanche.id || !lanche.nome || !lanche.ingredientes) {
-                    return res.status(500).send('Erro: Cada lanche deve ter id, nome e ingredientes.');
+                if (!lanche.id || typeof lanche.id !== 'string' || lanche.id.trim() === '') {
+                    return res.status(500).send('Erro: Cada lanche deve ter um id válido.');
+                }
+                if (!lanche.nome || typeof lanche.nome !== 'string' || lanche.nome.trim() === '') {
+                    return res.status(500).send('Erro: Cada lanche deve ter um nome válido.');
+                }
+                if (!lanche.ingredientes || typeof lanche.ingredientes !== 'string' || lanche.ingredientes.trim() === '') {
+                    return res.status(500).send('Erro: Cada lanche deve ter ingredientes válidos.');
                 }
             });
 
