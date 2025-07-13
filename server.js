@@ -46,43 +46,37 @@ app.post('/contato', (req, res) => {
 });
 
 app.get('/api/lanches', (_, res) => {
-    const filePath = path.join(__dirname, 'data', 'cardapio.json');
-    res.setHeader('Content-Type', 'application/json');
+    try {
+        const filePath = path.join(__dirname, 'data', 'cardapio.json');
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+        const cardapioData = JSON.parse(fileContent);
 
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Erro ao ler o arquivo:', err);
-            return res.status(500).send('Erro ao processar sua solicitação.');
+        if (!Array.isArray(cardapioData)) {
+            return res.status(500).send('Erro: O formato do arquivo JSON deve ser um array.');
         }
 
-        try {
-            const cardapioData = JSON.parse(data);
-            if (!Array.isArray(cardapioData)) {
-                return res.status(500).send('Erro: O formato do arquivo JSON deve ser um array.');
-            }
-
-            if (cardapioData.length < 3) {
-                return res.status(500).send('Erro: O array deve conter pelo menos 3 lanches.');
-            }
-
-            cardapioData.forEach(lanche => {
-                if (!lanche.id || typeof lanche.id !== 'string' || lanche.id.trim() === '') {
-                    return res.status(500).send('Erro: Cada lanche deve ter um id válido.');
-                }
-                if (!lanche.nome || typeof lanche.nome !== 'string' || lanche.nome.trim() === '') {
-                    return res.status(500).send('Erro: Cada lanche deve ter um nome válido.');
-                }
-                if (!lanche.ingredientes || typeof lanche.ingredientes !== 'string' || lanche.ingredientes.trim() === '') {
-                    return res.status(500).send('Erro: Cada lanche deve ter ingredientes válidos.');
-                }
-            });
-
-            res.status(200).json(cardapioData);
-        } catch (parseError) {
-            console.error('Erro ao analisar o JSON:', parseError);
-            res.status(500).send('Erro: O formato do arquivo JSON é inválido.');
+        if (cardapioData.length < 3) {
+            return res.status(500).send('Erro: O array deve conter pelo menos 3 lanches.');
         }
-    });
+
+        cardapioData.forEach(lanche => {
+            if (!lanche.id || typeof lanche.id !== 'string' || lanche.id.trim() === '') {
+                return res.status(500).send('Erro: Cada lanche deve ter um id válido.');
+            }
+            if (!lanche.nome || typeof lanche.nome !== 'string' || lanche.nome.trim() === '') {
+                return res.status(500).send('Erro: Cada lanche deve ter um nome válido.');
+            }
+            if (!lanche.ingredientes || typeof lanche.ingredientes !== 'string' || lanche.ingredientes.trim() === '') {
+                return res.status(500).send('Erro: Cada lanche deve ter ingredientes válidos.');
+            }
+        });
+
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(cardapioData);
+    } catch (error) {
+        console.error('Erro ao ler ou analisar o arquivo JSON:', error);
+        res.status(500).send('Erro interno do servidor.');
+    }
 });
 
 app.use((_, res) => {
