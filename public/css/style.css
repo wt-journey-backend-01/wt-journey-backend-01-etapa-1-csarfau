@@ -1,0 +1,95 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    color: #d9534f;
+    margin: 0;
+    font-size: 2.5em;
+}
+
+header p {
+    font-size: 1.1em;
+    color: #666;
+}
+
+section h2 {
+    color: #333;
+    border-bottom: 2px solid #d9534f;
+    padding-bottom: 10px;
+    margin-top: 40px;
+}
+
+.cardapio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.item-cardapio {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.item-cardapio h3 {
+    margin-top: 0;
+    color: #d9534f;
+}
+
+.item-cardapio .preco {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.form-sugestao {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-sugestao input,
+.form-sugestao textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.form-sugestao button {
+    padding: 12px 20px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-sugestao button:hover {
+    background-color: #c9302c;
+}
