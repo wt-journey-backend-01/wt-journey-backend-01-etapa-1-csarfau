@@ -47,6 +47,7 @@ app.post('/contato', (req, res) => {
 
 app.get('/api/lanches', (_, res) => {
     const filePath = path.join(__dirname, 'data', 'cardapio.json');
+    res.setHeader('Content-Type', 'application/json');
 
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
@@ -56,6 +57,20 @@ app.get('/api/lanches', (_, res) => {
 
         try {
             const cardapioData = JSON.parse(data);
+            if (!Array.isArray(cardapioData)) {
+                return res.status(500).send('Erro: O formato do arquivo JSON deve ser um array.');
+            }
+
+            if (cardapioData.length < 3) {
+                return res.status(500).send('Erro: O array deve conter pelo menos 3 lanches.');
+            }
+
+            cardapioData.forEach(lanche => {
+                if (!lanche.id || !lanche.nome || !lanche.ingredientes) {
+                    return res.status(500).send('Erro: Cada lanche deve ter id, nome e ingredientes.');
+                }
+            });
+
             res.status(200).json(cardapioData);
         } catch (parseError) {
             console.error('Erro ao analisar o JSON:', parseError);
