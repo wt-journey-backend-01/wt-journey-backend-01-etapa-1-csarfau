@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = 3000;
@@ -47,32 +48,32 @@ app.post('/contato', (req, res) => {
 
 app.get('/api/lanches', (_, res) => {
     try {
-        const filePath = path.join(__dirname, 'data', 'cardapio.json');
+        const filePath = path.join(__dirname, 'public', 'data', 'lanches.json');
         const fileContent = fs.readFileSync(filePath, 'utf8');
-        const cardapioData = JSON.parse(fileContent);
+        const lanches = JSON.parse(fileContent);
 
-        if (!Array.isArray(cardapioData)) {
-            return res.status(500).send('Erro: O formato do arquivo JSON deve ser um array.');
+        if (!Array.isArray(lanches)) {
+            return res.status(400).send('Erro: O JSON deve conter um array.');
         }
 
-        if (cardapioData.length < 3) {
-            return res.status(500).send('Erro: O array deve conter pelo menos 3 lanches.');
+        if (lanches.length < 3) {
+            return res.status(400).send('Erro: O array de lanches deve conter pelo menos 3 itens.');
         }
 
-        cardapioData.forEach(lanche => {
-            if (!lanche.id || typeof lanche.id !== 'string' || lanche.id.trim() === '') {
-                return res.status(500).send('Erro: Cada lanche deve ter um id válido.');
+        for (const lanche of lanches) {
+            if (!Number.isInteger(lanche.id) || lanche.id <= 0) {
+                return res.status(400).send(`Erro: Cada lanche deve ter um id válido.`);
             }
             if (!lanche.nome || typeof lanche.nome !== 'string' || lanche.nome.trim() === '') {
-                return res.status(500).send('Erro: Cada lanche deve ter um nome válido.');
+                return res.status(400).send(`Erro: Cada lanche deve ter um nome válido.`);
             }
             if (!lanche.ingredientes || typeof lanche.ingredientes !== 'string' || lanche.ingredientes.trim() === '') {
-                return res.status(500).send('Erro: Cada lanche deve ter ingredientes válidos.');
+                return res.status(400).send(`Erro: Cada lanche deve ter ingredientes válidos.`);
             }
-        });
+        }
 
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(cardapioData);
+        res.status(200).json(lanches);
+
     } catch (error) {
         console.error('Erro ao ler ou analisar o arquivo JSON:', error);
         res.status(500).send('Erro interno do servidor.');
