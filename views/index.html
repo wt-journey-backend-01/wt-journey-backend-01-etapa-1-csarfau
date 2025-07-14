@@ -20,30 +20,7 @@
 
           <h3>Lanches</h3>
           <div id="lanches-grid" class="cardapio-grid">
-            <div class="item-cardapio">
-              <h3>DevBurger Clássico</h3>
-              <p>
-                <strong>Ingredientes:</strong> Pão brioche, Carne 150g, Queijo
-                cheddar, Alface americana, Tomate fresco, Molho especial
-              </p>
-            </div>
-
-            <div class="item-cardapio">
-              <h3>Burger de Bacon</h3>
-              <p>
-                <strong>Ingredientes:</strong> Pão australiano, Carne 180g,
-                Queijo prato, Bacon crocante, Cebola caramelizada, Molho
-                barbecue
-              </p>
-            </div>
-
-            <div class="item-cardapio">
-              <h3>Commit Veggie</h3>
-              <p>
-                <strong>Ingredientes:</strong> Pão integral, Burger de grão de
-                bico, Queijo vegano, Rúcula, Tomate seco, Maionese de ervas
-              </p>
-            </div>
+            <p>Carregando cardápio...</p>
           </div>
         </section>
 
@@ -73,5 +50,49 @@
         </section>
       </main>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const lanchesGrid = document.getElementById("lanches-grid");
+
+        async function carregarLanches() {
+          try {
+            const response = await fetch("http://localhost:3000/api/lanches");
+
+            if (!response.ok) {
+              throw new Error(`Erro na requisição: ${response.statusText}`);
+            }
+
+            const lanches = await response.json();
+
+            lanchesGrid.innerHTML = "";
+
+            if (lanches.length === 0) {
+              lanchesGrid.innerHTML =
+                "<p>Nenhum lanche encontrado no momento.</p>";
+              return;
+            }
+
+            lanches.forEach((lanche) => {
+              const lancheHTML = `
+                <div class="item-cardapio">
+                  <h3>${lanche.nome}</h3>
+                  <p>
+                    <strong>Ingredientes:</strong> ${lanche.ingredientes}
+                  </p>
+                </div>
+              `;
+              lanchesGrid.innerHTML += lancheHTML;
+            });
+          } catch (error) {
+            console.error("Falha ao buscar lanches:", error);
+            lanchesGrid.innerHTML =
+              '<p style="color: red;">Ops! Não foi possível carregar o cardápio. Tente novamente mais tarde.</p>';
+          }
+        }
+
+        carregarLanches();
+      });
+    </script>
   </body>
 </html>
